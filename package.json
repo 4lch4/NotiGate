@@ -1,0 +1,67 @@
+{
+  "name": "notigate",
+  "displayName": "Notification Gateway",
+  "version": "0.0.0",
+  "description": "An API that serves as a gateway for any and all notifications to be funneled where you want.",
+  "main": "./dist/index.js",
+  "exports": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "license": "MIT",
+  "homepage": "https://github.com/4lch4/NotiGate",
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "tsc && tsc-alias",
+    "pretty": "prettier --write .",
+    "lint": "prettier -c .",
+    "test": "echo 'There are currently no tests available.'",
+    "scan": "snyk monitor && snyk code test"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "keywords": [
+    "notification-gateway",
+    "koa",
+    "notifications",
+    "gateway"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com/4lch4/Notification-Gateway.git"
+  },
+  "author": {
+    "name": "4lch4",
+    "email": "hey@4lch4.email",
+    "url": "https://4lch4.com"
+  },
+  "bugs": {
+    "email": "bugs@4lch4.email",
+    "url": "https://github.com/4lch4/Notification-Gateway/issues"
+  },
+  "dependencies": {
+    "@4lch4/koa-oto": "^2.0.0",
+    "@4lch4/koa-router-printer": "^1.4.3",
+    "@axiomhq/winston": "^1.0.0-rc.1",
+    "@koa/router": "^12.0.0",
+    "dotenv": "^16.3.1",
+    "koa": "^2.14.2",
+    "koa-body": "^6.0.1",
+    "koa-helmet": "^7.0.2",
+    "koa-logger": "^3.2.1",
+    "mongodb": "^6.1.0",
+    "winston": "^3.10.0"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.13.9",
+    "@types/koa__router": "^12.0.1",
+    "@types/koa-logger": "^3.1.3",
+    "@types/node": "^20.8.2",
+    "prettier": "^3.0.3",
+    "tsc-alias": "^1.0.0",
+    "typescript": "^5.2.2"
+  }
+}
