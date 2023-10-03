@@ -1,10 +1,10 @@
-# Notification Gateway
+# Notification Gateway (NotiGate)
 
 This repository is home to an API that serves as a notification/webhook gateway with support for a variety of services.
 
 ## Name
 
-The name of this project is NotiGate, but Notification Gateway is likely still scattered throughout and I'll have to clean that up at some point.
+The name of this project is NotiGate, which I pronounce as "Naughty Gate" or "Note-E Gate" but you can pronounce it however you want.
 
 ## Routes
 
