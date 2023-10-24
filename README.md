@@ -4,7 +4,7 @@ This repository is home to an API that serves as a notification/webhook gateway 
 
 ## Name
 
-The name of this project is NotiGate, which I pronounce as "Naughty Gate" or "Note-E Gate" but you can pronounce it however you want.
+The name of this project is NotiGate, which I pronounce as "Naughty Gate" or "Note-E-Gate" but you can pronounce it however you want.
 
 ## Routes
 
