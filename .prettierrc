@@ -14,5 +14,6 @@
   "proseWrap": "preserve",
   "quoteProps": "as-needed",
   "requirePragma": false,
-  "endOfLine": "lf"
+  "endOfLine": "lf",
+  "plugins": ["prettier-plugin-organize-imports", "prettier-plugin-packagejson"]
 }
