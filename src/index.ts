@@ -8,7 +8,16 @@ const api = new Elysia({
   prefix: '/api/v1',
 })
 
-api.use(GoogleRoutes).use(GitHubRoutes)
+api
+  .use(GoogleRoutes)
+  .use(GitHubRoutes)
+  .onError(ctx => {
+    logger.error(`[NotiGate#onError]: ctx.error`, ctx.error)
+    logger.error(`[NotiGate#onError]: ctx.body`, ctx.body)
+    logger.error(`[NotiGate#onError]: ctx.query`, ctx.query)
+    logger.error(`[NotiGate#onError]: ctx.params`, ctx.params)
+    logger.error(`[NotiGate#onError]: ctx.headers`, ctx.headers)
+  })
 
 api.listen(4242)
 
