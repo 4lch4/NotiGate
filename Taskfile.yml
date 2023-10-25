@@ -15,11 +15,9 @@ tasks:
     cmd: docker build -t $DOCKER_IMAGE .
 
   clean:
-    desc: Deletes the build output directory, any installed dependencies, any generated files, and any built Docker images.
+    desc: Deletes the built Docker container.
     aliases: [c]
-    cmds:
-      - rm -rf dist node_modules package-lock.json bun.lockb
-      - docker rm $DOCKER_CONTAINER_NAME
+    cmd: docker rm $DOCKER_CONTAINER_NAME
 
   start:
     desc: Starts the project locally in a Docker container.
