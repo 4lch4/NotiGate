@@ -12,6 +12,7 @@
 **/.cache
 **/.turbo
 **/.vercel
+assets/backup/**
 
 # Files
 **/.dccache
