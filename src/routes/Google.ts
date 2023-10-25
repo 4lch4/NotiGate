@@ -6,6 +6,13 @@ import { DiscordWebhookPayload } from '../lib'
 const UNKNOWN_STRING = 'unknown'
 
 export const GoogleRoutes = new Elysia({ name: 'Google-Routes' })
+  .onError(ctx => {
+    logger.error(`[GoogleRoutes#onError]: ctx.error`, ctx.error)
+    logger.error(`[GoogleRoutes#onError]: ctx.body`, ctx.body)
+    logger.error(`[GoogleRoutes#onError]: ctx.query`, ctx.query)
+    logger.error(`[GoogleRoutes#onError]: ctx.params`, ctx.params)
+    logger.error(`[GoogleRoutes#onError]: ctx.headers`, ctx.headers)
+  })
   .get(
     '/google',
     async ctx => {
