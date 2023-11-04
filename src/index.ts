@@ -1,16 +1,87 @@
 import { logger } from '@4lch4/backpack'
-import Table from 'cli-table'
+import { HealthCheckRoutes, printRoutes } from '@4lch4/backpack/elysia'
+import { swagger } from '@elysiajs/swagger'
+import { AndroidRoute, GitHubRoutes, GoogleRoutes, TodoistRoutes } from '@routes/index.js'
+import { PackageJSON } from '@schemas/PackageJSON.js'
 import { Elysia } from 'elysia'
-import { GitHubRoutes, GoogleRoutes } from './routes'
+import { dirname, join } from 'path'
+import { fileURLToPath } from 'url'
 
-const api = new Elysia({
-  name: 'NotiGate',
-  prefix: '/api/v1',
-})
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const packageJson = await Bun.file(join(__dirname, '..', 'package.json')).json<PackageJSON>()
+
+const api = new Elysia({ prefix: '/api/v1', name: packageJson.displayName })
+
+// const SwaggerDetails = {
+//   info: {
+//     title: packageJson.displayName!,
+//     version: packageJson.version!,
+//     description: packageJson.description!,
+//     license: { name: packageJson.license! },
+//   },
+//   servers: [
+//     {
+//       url: 'http://localhost:3232/api/v1',
+//       description: 'Localhost',
+//     },
+//     {
+//       description: 'Production',
+//       url: 'https://notigate.4lch4.io/api/v1',
+//     },
+//     {
+//       description: 'Test',
+//       url: 'https://test.notigate.4lch4.io/api/v1',
+//     },
+//   ],
+// }
 
 api
+  .use(
+    swagger({
+      documentation: {
+        info: {
+          title: packageJson.displayName!,
+          version: packageJson.version!,
+          description: packageJson.description!,
+          license: { name: packageJson.license! },
+          contact: {
+            name: '4lch4',
+            email: 'hey@4lch4.email',
+            url: 'https://4lch4.com',
+          },
+        },
+        servers: [
+          {
+            url: 'http://localhost:4242/api/v1',
+            description: 'Localhost',
+          },
+          {
+            description: 'Test',
+            url: 'https://test.notigate.4lch4.io/api/v1',
+          },
+          {
+            description: 'Production',
+            url: 'https://notigate.4lch4.io/api/v1',
+          },
+        ],
+        tags: [
+          {
+            name: 'Notification',
+            description: 'Routes for receiving notifications from various services.',
+          },
+          {
+            name: 'Health',
+            description: 'Routes for checking the health of the API.',
+          },
+        ],
+      },
+    })
+  )
+  .use(HealthCheckRoutes('/status'))
+  .use(AndroidRoute)
   .use(GoogleRoutes)
   .use(GitHubRoutes)
+  .use(TodoistRoutes)
   .onError(ctx => {
     logger.error(`[NotiGate#onError]: ctx.error`, ctx.error)
     logger.error(`[NotiGate#onError]: ctx.body`, ctx.body)
@@ -21,40 +92,6 @@ api
 
 api.listen(4242)
 
-const table = new Table({
-  head: ['Path', 'Method'],
-  colAligns: ['left', 'middle'],
-})
+printRoutes(api.routes, { multiMethodRows: true })
 
-for (const route of api.routes) {
-  table.push([route.path, route.method.toUpperCase()])
-}
-
-console.log(`\n${table.toString()}\n`)
-
-logger.info(`🦊 Started listening on port 4242...`)
-
-// import { printRoutes } from '@4lch4/koa-router-printer'
-// import Koa from 'koa'
-// import { koaBody } from 'koa-body'
-// import Helmet from 'koa-helmet'
-// import { getAppConfig, logger } from './lib/index.js'
-// import { getRoutes } from './routes/index.js'
-
-// const app = new Koa()
-// const config = getAppConfig()
-// const { apiPort, apiName, apiVersion } = config
-
-// app.use(Helmet())
-// app.use(koaBody())
-
-// for (const route of await getRoutes(config)) {
-//   app.use(route.routes())
-//   app.use(route.allowedMethods())
-// }
-
-// printRoutes(app)
-
-// app.listen(apiPort, () => {
-//   logger.info(`${apiName}-${apiVersion} has come online, listening on port ${apiPort}!`)
-// })
+logger.success(`🦊 Started listening on port 4242...`)

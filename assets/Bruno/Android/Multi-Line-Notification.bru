@@ -1,0 +1,41 @@
+meta {
+  name: Multi-Line Notification
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/android
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  User-Agent: Tasker (SM-S908U)
+  Accept: application/json
+}
+
+body:json {
+  {"ownerApplication": "Messages", "title": "1410100001","text": "FRM:Devin Leaman
+  SUBJ:Another One
+  MSG:AAAHHH?
+  
+  asdfasdcvazxcvasdfasdfasdfgf","subtext": "%evtprm4","messages": "%evtprm5","otherText": "%evtprm6","category": "msg","newOnly": "false"}
+}
+
+script:pre-request {
+  const body = req.getBody();
+
+  if (body.includes('\n')) req.setBody(body.replaceAll('\n', '\\n'))
+}
+
+tests {
+  test("should return acknowledged = true", function() {
+    expect(res.getBody().acknowledged).to.be.true
+  })
+
+  test("should return insertedId", function() {
+    expect(res.getBody().insertedId).to.be.a('string')
+  })
+}

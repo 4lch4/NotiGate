@@ -1,0 +1,12 @@
+{
+  "ownerApplication": "com.google.android.apps.messaging",
+  "title": "Travis Leaman",
+  "text": "Line 1
+
+Line 2",
+  "subtext": "%evtprm4",
+  "messages": "%evtprm5",
+  "otherText": "%evtprm6",
+  "category": "msg",
+  "newOnly": "false"
+}

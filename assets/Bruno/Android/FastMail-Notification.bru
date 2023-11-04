@@ -1,0 +1,31 @@
+meta {
+  name: FastMail Notification
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/android
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  User-Agent: Tasker (SM-S908U)
+  Accept: application/json
+}
+
+body:json {
+  {"ownerApplication": "Fastmail", "title": "Devin W. Leaman","text": "[4lch4/Backpack] Run failed: Build & Release Workflow - v1.1.1 (9ff4cda)","subtext": "hey@4lch4.email","messages": "%evtprm5","otherText": "[4lch4/Backpack] Run failed: Build & Release Workflow - v1.1.1 (9ff4cda)[4lch4/Backpack] Build & Release Workflow workflow run Build & Release Workflow: All jobs have failed View workflow run Build & Release Workflow / Build Codebase","category": "email","newOnly": "true"}
+}
+
+tests {
+  test("should return acknowledged = true", function() {
+    expect(res.getBody().acknowledged).to.be.true
+  })
+  
+  test("should return insertedId", function() {
+    expect(res.getBody().insertedId).to.be.a('string')
+  })
+}

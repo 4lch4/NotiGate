@@ -1,9 +1,19 @@
 version: 3
 
-# Source .env file(s)
+# Import Environment Variables
 dotenv: [.env]
 
 tasks:
+  env:
+    desc: Downloads the nonprod .env file from Doppler.
+    aliases: [e]
+    cmd: doppler secrets download --no-file --format docker -p notigate -c nonprod > .env
+
+  env:prod:
+    desc: Downloads the prod .env file from Doppler.
+    aliases: [ep]
+    cmd: doppler secrets download --no-file --format docker -p notigate -c prod > prod.env
+
   pretty:
     desc: Uses the Prettier CLI tool to format the codebase.
     aliases: [p, format, fmt]
@@ -22,7 +32,7 @@ tasks:
   start:
     desc: Starts the project locally in a Docker container.
     aliases: [s, up]
-    cmd: docker run -d -p $API_PORT:$API_PORT --env-file=.env --name $DOCKER_CONTAINER_NAME $DOCKER_IMAGE
+    cmd: docker run -d -p 3232:$API_PORT --env-file=.env --name $DOCKER_CONTAINER_NAME $DOCKER_IMAGE
 
   stop:
     desc: Stops the locally running Docker container.

@@ -1,9 +1,9 @@
 import { logger } from '@4lch4/backpack'
 import axios from 'axios'
 import { Elysia, t } from 'elysia'
-import { DiscordWebhookPayload } from '../lib'
+import { DiscordWebhookPayload } from '../lib/index.js'
 
-const PostBodySchema = t.Partial(
+export const PostBodySchema = t.Partial(
   t.Object({
     version: t.String(),
     incident: t.Object({
@@ -65,31 +65,37 @@ const PostBodySchema = t.Partial(
 )
 
 export const GoogleRoutes = new Elysia({ name: 'Google-Routes' })
-  .onError(ctx => {
-    logger.error(`[GoogleRoutes#onError]: ctx.error`, ctx.error)
-    logger.error(`[GoogleRoutes#onError]: ctx.body`, ctx.body)
-    logger.error(`[GoogleRoutes#onError]: ctx.query`, ctx.query)
-    logger.error(`[GoogleRoutes#onError]: ctx.params`, ctx.params)
-    logger.error(`[GoogleRoutes#onError]: ctx.headers`, ctx.headers)
-  })
-  .get('/google', async ctx => {
-    // const webhookPayload: DiscordWebhookPayload = { content: ctx.body.incident.summary }
-    // const webhookRes = await axios.post(process.env.DISCORD_WEBHOOK_URL!, webhookPayload)
-
-    logger.log('success', `[GoogleRoutes#GET]: Request received...`, { ctx })
-  })
-  .post(
+  .get(
     '/google',
     async ctx => {
+      // const webhookPayload: DiscordWebhookPayload = { content: ctx.body.incident.summary }
+      // const webhookRes = await axios.post(process.env.DISCORD_WEBHOOK_URL!, webhookPayload)
+
+      logger.log('success', `[GoogleRoutes#GET]: Request received...`, { ctx })
+    },
+    {
+      detail: {
+        description: 'This route is for receiving notifications from Google and processing them.',
+        summary: 'Google Notification Route',
+        tags: ['Notification'],
+      },
+    }
+  )
+  .post(
+    '/google',
+    async ({ body }: { body: any }) => {
       try {
-        const webhookPayload: DiscordWebhookPayload = { content: ctx.body.incident?.summary || 'Unknown summary' }
-        const webhookRes = await axios.post(
-          'https://discord.com/api/webhooks/1166505611052204093/GZO5tyUP_h-trvc0SzpifDkWmqnEyF3l4lKDgZ00vCfiLwn3w3FW8PF4w7fyA3areCtZ',
-          webhookPayload
-        )
+        const webhookUrl = process.env.DISCORD_WEBHOOK_URL
+        const webhookPayload: DiscordWebhookPayload = {
+          content: body.incident.summary || 'Unknown summary',
+        }
+
+        if (!webhookUrl) return new Error('No webhook URL located...')
+
+        const webhookRes = await axios.post(webhookUrl, webhookPayload)
 
         logger.log('success', `[GoogleRoutes#POST]: Request sent to Discord Webhook...`, {
-          body: ctx.body,
+          body,
           webhookPayload,
           webhookRes: {
             data: webhookRes.data,
@@ -99,11 +105,19 @@ export const GoogleRoutes = new Elysia({ name: 'Google-Routes' })
             config: webhookRes.config,
           },
         })
+
+        return 'OK'
       } catch (error) {
         logger.error(`[GoogleRoutes#POST]: Error sending request to Discord Webhook...`, error)
+
+        return error
       }
     },
     {
-      body: PostBodySchema,
+      detail: {
+        description: 'This route is for receiving notifications from Google and processing them.',
+        summary: 'Google Notification Route',
+        tags: ['Notification'],
+      },
     }
   )

@@ -1,0 +1,10 @@
+{
+  "ownerApplication": "android",
+  "title": "Data warning",
+  "text": "You've used 5.31 GB of data.",
+  "subtext": "%evtprm4",
+  "messages": "%evtprm5",
+  "otherText": "You've used 5.31 GB of data.",
+  "category": "%evtprm7",
+  "newOnly": "false"
+}
